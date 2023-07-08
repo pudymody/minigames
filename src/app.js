@@ -78,6 +78,15 @@ class Score {
 		substract_1_ctx.globalCompositeOperation = "source-in";
 		substract_1_ctx.fillStyle = "#f83800";
 		substract_1_ctx.fillRect(0,0,Score.substract.width,Score.substract.height);
+
+		return new Promise( (resolve,reject) => { 
+			Score.crown = new Image();
+			Score.crown.addEventListener("load", (e) => {
+				resolve();
+			})
+			Score.crown.addEventListener("error", reject);
+			Score.crown.src = "crown.png";
+		});
 	}
 
 	constructor({x,y,width,height,align, font, info_position} = {x: 0, y: 0, width: 16, height: 16, align : "left", info_position: "top" }){
@@ -92,6 +101,7 @@ class Score {
 		this.info_position = info_position;
 		this.is_adding = false;
 		this.is_substracting = false;
+		this.is_winner = false;
 	}
 
 	add_start(){
@@ -109,6 +119,10 @@ class Score {
 	add_substract_end(){
 		this.is_substracting = false;
 		this.is_adding = false;
+	}
+
+	set_winner(){
+		this.is_winner = true;
 	}
 
 	draw(dt, ctx){
@@ -131,6 +145,10 @@ class Score {
 
 		if( this.is_substracting ){
 			ctx.drawImage(Score.substract, info_x, info_y)
+		}
+
+		if( this.is_winner ){
+			ctx.drawImage(Score.crown, info_x, info_y)
 		}
 	}
 }
@@ -242,7 +260,14 @@ const STATES = new Map([
 			P1_TOUCH = false;
 			P2_TOUCH = false;
 
-			if( p1_score.score >= MAX_SCORE || p2_score.score >= MAX_SCORE ){
+			if( p1_score.score >= MAX_SCORE){
+				p1_score.set_winner();
+				CURRENT_STATE = "ended";
+				return;
+			}
+
+			if(p2_score.score >= MAX_SCORE ){
+				p2_score.set_winner();
 				CURRENT_STATE = "ended";
 				return;
 			}
