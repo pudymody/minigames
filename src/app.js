@@ -17,8 +17,7 @@ class Card {
 		ctx.strokeStyle = "#000000";
 		ctx.fillStyle = "#ffffff";
 		ctx.lineWidth = this.border;
-		ctx.strokeRect(this.x, this.y, this.height, this.height);
-		ctx.fillRect(this.x, this.y, this.width - this.border, this.height - this.border);
+		ctx.fillRect(this.x, this.y, this.width, this.height);
 
 		ctx.fillStyle = "#000000";
 		ctx.fillText(this.value, this.x + 10, this.y + 20);
@@ -182,8 +181,8 @@ const CARD_PLAYER_SIZE = 16*2;
 const font = new Font();
 
 const p1_bg = "#7c7c7c";
-const p1_card = new Card({x:WIDTH - UNIT*3, y: 16, width: CARD_PLAYER_SIZE, height: CARD_PLAYER_SIZE, border: 1 });
-const p1_score = new Score({x: UNIT*1, y: UNIT*1, width: UNIT, height: UNIT, font: font, info_position: "bottom" })
+const p1_card = new Card({x:16, y: HEIGHT - UNIT*3, width: CARD_PLAYER_SIZE, height: CARD_PLAYER_SIZE, border: 1 });
+const p1_score = new Score({x: WIDTH - UNIT*1, y: HEIGHT - UNIT*2, width: UNIT, height: UNIT, font: font, info_position: "top", align: "right" })
 
 const p2_bg = "#bcbcbc";
 const p2_card = new Card({x:16, y: HEIGHT - UNIT*3, width: CARD_PLAYER_SIZE, height: CARD_PLAYER_SIZE, border: 1 });
@@ -296,12 +295,18 @@ function loop(timeStamp){
 	ctx.fillStyle = p2_bg;
 	ctx.fillRect(0,HEIGHT/2, WIDTH, HEIGHT/2);
 
+	ctx.save();
+	ctx.translate(WIDTH, HEIGHT);
+	ctx.rotate(Math.PI);
 	p1_card.draw(dt,ctx);
-	p2_card.draw(dt,ctx);
-	main_card.draw(dt,ctx);
-
 	p1_score.draw(dt, ctx);
+	ctx.restore();
+
+
+	p2_card.draw(dt,ctx);
 	p2_score.draw(dt, ctx);
+
+	main_card.draw(dt,ctx);
 	start = timeStamp;
 	window.requestAnimationFrame(loop);
 }
