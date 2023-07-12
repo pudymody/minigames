@@ -5,7 +5,35 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>#1</title>
-	<link rel="stylesheet" href="style.css">
+	<style>
+		body {
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			height: 100dvh;
+			background: #000;
+		}
+
+		canvas {
+			height: 100vmin;
+			width: auto;
+			image-rendering: pixelated;
+		}
+
+		@media (orientation: portrait) {
+			canvas {
+				width: 100vmin;
+				height: auto;
+			}
+		}
+
+		#help {
+			color: white;
+		}
+	</style>
 </head>
 <body>
 	<canvas width="240" height="160" style="display:none"></canvas>
@@ -15,6 +43,6 @@
 		<p>Fail when tapping, and lose a point</p>
 		<button>Start</button>
 	</div>
-	<script src="app.js" type="module"></script>
+	<script src="canvas.js" type="module"></script>
 </body>
 </html>

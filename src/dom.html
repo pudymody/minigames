@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>#1</title>
+	<style>
+		body {
+			margin: 0;
+		}
+
+		.card {
+			aspect-ratio: 1;
+			height: 100%;
+			justify-self: center;
+			background: url("cards.png") no-repeat;
+			background-size: 300%;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}
+
+		.card[data-card="0"]{ background-position: 0% 0%; }
+		.card[data-card="1"]{ background-position: 50% 0%; }
+		.card[data-card="2"]{ background-position: 100% 0%; }
+		.card[data-card="3"]{ background-position: 0% 50%; }
+		.card[data-card="4"]{ background-position: 50% 50%; }
+		.card[data-card="5"]{ background-position: 100% 50%; }
+		.card[data-card="6"]{ background-position: 0% 100%; }
+		.card[data-card="7"]{ background-position: 50% 100%; }
+		.card[data-card="8"]{ background-position: 100% 100%; }
+
+		.card--central {
+			grid-column: 2/4;
+			grid-row: 4/6;
+		}
+
+		.card--p1 {
+			grid-column: 4/5;
+			grid-row: 2/3;
+			transform: rotate(180deg);
+			transform-origin: center center;
+		}
+
+		.card--p2 {
+			grid-column: 1/2;
+			grid-row: 7/8;
+		}
+
+		.score, .points {
+			color: white;
+			text-align: center;
+			line-height: 1;
+			font-size: 12.5vh;
+			font-size: 12.5dvh;
+		}
+
+		.points--add {
+			color: green;
+		}
+
+		.points--substract {
+			color: red;
+		}
+
+		.score--p1 {
+			grid-column: 1/2;
+			grid-row: 2/3;
+			transform: rotate(180deg);
+			transform-origin: center center;
+		}
+
+		.score--p2 {
+			grid-column: 4/5;
+			grid-row: 7/8;
+		}
+
+		.points--p1, .winner--p1 {
+			grid-column: 1/2;
+			grid-row: 3/4;
+			transform: rotate(180deg);
+			transform-origin: center center;
+		}
+
+		.points--p2, .winner--p2 {
+			grid-column: 4/5;
+			grid-row: 6/7;
+		}
+
+		.winner {
+			aspect-ratio: 1;
+			height: 100%;
+			justify-self: center;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}
+
+		.help {
+			background: rgba(0,0,0,.8);
+			color: white;
+			padding: 1rem;
+			font-size: 2rem;
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+
+		.game {
+			display: grid;
+			grid-template-columns: repeat(4, 25%);
+			grid-template-rows: repeat(8, 12.5%);
+			height: 100vh;
+			height: 100dvh;
+			background: linear-gradient(to bottom, #2a2b2b 50%, #999 50%);
+		}
+
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<section class="help">
+		<p>Tap your side of the screen when you see your card and gain a point</p>
+		<p>Tap when you see your oponent's, and steal a point</p>
+		<p>Fail when tapping, and lose a point</p>
+		<button>Start</button>
+	</section>
+
+	<section class="game hidden">
+		<div class="card card--central" data-card="0"></div>
+
+		<div class="card card--p1" data-card="1"></div>
+		<div class="score score--p1">0</div>
+		<div class="points points--p1 hidden">+1</div>
+		<img src="crown.png" class="winner winner--p1 hidden" />
+
+		<div class="card card--p2" data-card="2"></div>
+		<div class="score score--p2">0</div>
+		<div class="points points--p2 hidden">-1</div>
+		<img src="crown.png" class="winner winner--p2 hidden" />
+	</section>
+	<script src="dom.js" type="module"></script>
+</body>
+</html>
