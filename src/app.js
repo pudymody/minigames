@@ -1,4 +1,15 @@
 class Card {
+	static load(){
+		return new Promise( (resolve,reject) => {
+			Score.sprite = new Image();
+			Score.sprite.addEventListener("load", (e) => {
+				resolve();
+			})
+			Score.sprite.addEventListener("error", reject);
+			Score.sprite.src = "cards.png";
+		});
+	}
+
 	constructor({x,y,width,height, border = 1}){
 		this.x = x;
 		this.y = y;
@@ -10,17 +21,13 @@ class Card {
 	}
 
 	change(){
-		this.value = Math.ceil(Math.random() * 10);
+		this.value = Math.floor(Math.random() * 10);
 	}
 
 	draw(dt,ctx){
-		ctx.strokeStyle = "#000000";
-		ctx.fillStyle = "#ffffff";
-		ctx.lineWidth = this.border;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-
-		ctx.fillStyle = "#000000";
-		ctx.fillText(this.value, this.x + 10, this.y + 20);
+		const sprite_x = (this.value % 3)*32;
+		const sprite_y = Math.floor((this.value/3))*32
+		ctx.drawImage(Score.sprite, sprite_x, sprite_y, 32, 32, this.x, this.y ,this.width, this.height);
 	}
 }
 
@@ -288,6 +295,7 @@ function loop(timeStamp){
 	cb(dt);
 
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
+	ctx.imageSmoothingEnabled = false;
 
 	ctx.fillStyle = p1_bg;
 	ctx.fillRect(0,0, WIDTH, HEIGHT/2);
@@ -313,6 +321,7 @@ function loop(timeStamp){
 
 font.load()
 	.then(() => Score.load(font))
+	.then(() => Card.load() )
 	.then(() => {
 		window.requestAnimationFrame(loop);
 	});
