@@ -21,7 +21,7 @@ class Card {
 	}
 
 	change(){
-		this.value = Math.floor(Math.random() * 10);
+		this.value = Math.floor(Math.random() * 9);
 	}
 
 	draw(dt,ctx){
