@@ -197,7 +197,7 @@ const p2_score = new Score({x: WIDTH - UNIT*1, y: HEIGHT - UNIT*2, width: UNIT, 
 
 const main_card = new Card({x:6 * UNIT, y: 3.5 * UNIT, width: UNIT*3, height: UNIT*3, border: 1 });
 
-const MAIN_CARD_TIMER = new Timer(750);
+const MAIN_CARD_TIMER = new Timer(725);
 const SCORE_SCREEN_TIMER = new Timer(2500);
 
 const MAX_SCORE = 2;
@@ -205,14 +205,6 @@ const MAX_SCORE = 2;
 let start;
 let P1_TOUCH = false;
 let P2_TOUCH = false;
-
-document.addEventListener("pointerdown", function(e){
-	const is_p1 = e.y <= window.innerHeight / 2;
-	const is_p2 = !is_p1;
-
-	P1_TOUCH = is_p1;
-	P2_TOUCH = is_p2;
-});
 
 // playing | scoring
 let CURRENT_STATE = "playing";
@@ -323,5 +315,33 @@ font.load()
 	.then(() => Score.load(font))
 	.then(() => Card.load() )
 	.then(() => {
-		window.requestAnimationFrame(loop);
+		const $help = document.querySelector("#help");
+		const $button = document.querySelector("button");
+
+		$help.style.display = "block";
+		$button.addEventListener("click", async function start(e){
+			$button.removeEventListener("click", start);
+			$help.style.display = "none";
+			document.querySelector("canvas").style.display = "block";
+			if( document.body.requestFullscreen ){
+				try{
+					await document.body.requestFullscreen();
+				}catch(e){}
+			}
+
+			if( screen.orientation.lock ){
+				try{
+					await screen.orientation.lock("landscape")
+				}catch(e){}
+			}
+
+			window.requestAnimationFrame(loop);
+			document.addEventListener("pointerdown", function(e){
+				const is_p1 = e.y <= window.innerHeight / 2;
+				const is_p2 = !is_p1;
+
+				P1_TOUCH = is_p1;
+				P2_TOUCH = is_p2;
+			});
+		});
 	});
